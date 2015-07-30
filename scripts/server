@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cd www
+cl app/scripts/server.lisp
+

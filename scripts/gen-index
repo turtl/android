@@ -1,0 +1,57 @@
+#!/bin/bash
+
+### This script generates index.html, which loads all needed javascript and
+### css for the app.
+
+pwd=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+app="$pwd/.."
+
+cd $app/www/app
+
+ASSET_ROOT=""
+SEARCH_PATH=""
+source "$app/www/app/scripts/include.sh"
+
+## -----------------------------------------------------------------------------
+## generate extra
+## -----------------------------------------------------------------------------
+extra='<base href="app/">'
+
+## -----------------------------------------------------------------------------
+## generate CSS links
+## -----------------------------------------------------------------------------
+
+css=""
+for x in $(all_css); do
+	css="${css}$(print_css $x)"
+done
+
+## -----------------------------------------------------------------------------
+## generate JS includes
+## -----------------------------------------------------------------------------
+js=""
+js="${js}\n<script>window._base_url = new String(window.location).replace(/\\\/(index\\\.html)?$/, '/app');</script>"
+for x in $(all_js); do
+	js="${js}$(print_js $x)"
+done
+js="${js}\n<script>config.base_url = window._base_url;</script>"
+js="${js}\n<script>config.cookie_login = false;</script>"
+
+## -----------------------------------------------------------------------------
+## generate inline JS
+## -----------------------------------------------------------------------------
+#for x in $(inline_js); do
+	#js="${js}$(print_inline_js $x)"
+#done
+
+## -----------------------------------------------------------------------------
+## put it all together
+## -----------------------------------------------------------------------------
+index="$(cat $app/www/app/views/layouts/default.html)"
+index="$(do_replace "$index" '{{extra}}' "$extra")"
+index="$(do_replace "$index" '{{gencss}}' "$css")"
+index="$(do_replace "$index" '{{genjs}}' "$js")"
+
+# send our generated data into their restecpive files
+echo -ne "$index" > $app/www/index.html
+

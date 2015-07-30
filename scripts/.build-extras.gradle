@@ -1,0 +1,19 @@
+android.aaptOptions.ignoreAssetsPattern = "!<dir>_*:<dir>node_modules:.*"
+ext.postBuildExtras = {
+	if (!file('assets/www/app/controllers/_modules').exists()) {
+		return
+	}
+	android.applicationVariants.all { variant ->
+        def variantName = variant.name.capitalize()
+        def mergeTask = tasks["merge${variantName}Assets"]
+        def processTask = tasks["process${variantName}Resources"]
+		println "- Creating _module copy task"
+        def newTask = project.task("copyModuleAssets${variantName}", type: Copy) {
+            from "assets/www/app/controllers/_modules"
+            into "${mergeTask.outputDir}/www/app/controllers/_modules"
+        }
+        newTask.dependsOn(mergeTask)
+        processTask.dependsOn(newTask)
+    }
+};
+
