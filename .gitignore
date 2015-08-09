@@ -1,5 +1,6 @@
 node_modules
-platforms/
+platforms/android/*
+!platforms/android/AndroidManifest.xml
 plugins/
 
 *.apk
