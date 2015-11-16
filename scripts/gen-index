@@ -15,7 +15,7 @@ source "$app/www/app/scripts/include.sh"
 ## -----------------------------------------------------------------------------
 ## generate extra
 ## -----------------------------------------------------------------------------
-extra='<base href="app/">'
+extra="<base href=\"app/\">"
 
 ## -----------------------------------------------------------------------------
 ## generate CSS links
@@ -30,15 +30,15 @@ css="$(
 ## generate JS includes
 ## -----------------------------------------------------------------------------
 js=""
-js="${js}\n<script>window._base_url = new String(window.location).replace(/\\\/(index\\\.html)?$/, '/app');</script>"
+js="${js}\n<script src=\"../cordova.js\"></script>"
 js="${js}$(
 	echo "$(all_js)" \
 		| sed 's|___| |g' \
 		| sed 's|^|<script src="|' \
 		| sed 's|$|"></script>|'
 )"
-js="${js}\n<script>config.base_url = window._base_url;</script>"
-js="${js}\n<script>config.cookie_login = false;</script>"
+js="${js}\n<script src=\"../config.js\"></script>"
+js="${js}\n<script src=\"../events.js\"></script>"
 
 ## -----------------------------------------------------------------------------
 ## put it all together
