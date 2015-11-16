@@ -1,4 +1,4 @@
-.PHONY: all clean run-android build-android prepare-android compile-android
+.PHONY: all clean run-android release-android build-android prepare-android compile-android config-release config-restore
 
 allcss = $(shell find ../js/css/ -name "*.css" \
 			| grep -v 'reset.css')
@@ -11,6 +11,8 @@ all: .build/make-js www/index.html
 run-android: all
 	./scripts/cordova.sh run android
 
+release-android: config-release build-android config-restore
+
 build-android: compile-android
 
 compile-android: prepare-android
@@ -18,6 +20,13 @@ compile-android: prepare-android
 
 prepare-android: all
 	./scripts/cordova.sh prepare android
+
+config-release: all
+	cp www/config.js .build/config.js.tmp
+	cp www/config.live.js www/config.js
+
+config-restore:
+	mv .build/config.js.tmp www/config.js
 
 www/app/index.html: $(alljs) $(allcss) ../js/index.html
 	@echo "- rsync project: " $?
