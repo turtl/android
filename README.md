@@ -8,11 +8,13 @@ Let's go over some basic build instructions.
 Let's assume you have Node.js/NPM install already.
 
 ```bash
+npm install -g cordova
 mkdir turtl
 cd turtl/
 git clone https://github.com/turtl/js.git
 git clone https://github.com/turtl/mobile.git
-npm install -g cordova
+cd mobile/
+npm install
 ```
 
 So we grab our Turtl js project's source and the mobile source as siblings (with
