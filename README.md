@@ -13,7 +13,9 @@ mkdir turtl
 cd turtl/
 git clone https://github.com/turtl/js.git
 git clone https://github.com/turtl/mobile.git
-cd mobile/
+cd js/
+npm install
+cd ../mobile/
 npm install
 ```
 
