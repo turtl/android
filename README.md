@@ -1,36 +1,39 @@
 Turtl mobile
 ============
 
-Welcome! To build Turtl mobile, clone the project next to the [js](https://github.com/turtl/js)
-project. You'll want to have cordova installed:
+Let's go over some basic build instructions.
+
+## Setup
+
+Let's assume you have Node.js/NPM install already.
 
 ```bash
+mkdir turtl
+cd turtl/
+git clone https://github.com/turtl/js.git
+git clone https://github.com/turtl/mobile.git
 npm install -g cordova
 ```
 
-To setup the project:
+So we grab our Turtl js project's source and the mobile source as siblings (with
+the name "js" preserved...renaming `js` to something else will break the build).
+
+## Building
+
+The build is done via a makefile. There are a number of targets, but the main
+one we care about is `release-android`:
 
 ```bash
-cd /path/to/turtl/mobile/www
-ln -s ../../js ./app
-cd ..
+make release-android
 ```
 
-Now you can build the app:
+This should grab the needed plugins, run the build, and create the output APKs.
+
+If you want to run Turtl on your device/emulator, do
 
 ```bash
-./scripts/gen-index     # creates www/index.html
-cordova build android
+make run-android
 ```
 
-`cordova build` downloads all needed cordova platform/plugin files for you.
-
-If all goes well, you can then run with 
-
-```
-cordova run <platform> [--device]
-```
-
-Note that Turtl mobile currently only supports the Android platform. iOS support
-in the works!
+Simple. Probably.
 
