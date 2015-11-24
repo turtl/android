@@ -1,6 +1,7 @@
 node_modules
 platforms/
 plugins/
+www/version.js
 
 *.apk
 *.ap_

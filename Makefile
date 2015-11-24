@@ -6,7 +6,7 @@ alljs = $(shell echo "../js/main.js" \
 			&& find ../js/{config,controllers,handlers,library,models,turtl} -name "*.js" \
 			| grep -v '(ignore|\.thread\.)')
 
-all: .build/make-js www/index.html
+all: .build/make-js www/index.html www/version.js
 
 run-android: all
 	./scripts/cordova.sh run android
@@ -41,6 +41,13 @@ www/app/index.html: $(alljs) $(allcss) ../js/index.html
 			../js/ \
 			www/app
 	@touch www/app/index.html
+
+www/version.js: ./scripts/gen-index ./config.xml
+	@echo "- www/version.js: " $?
+	@cat config.xml \
+		| grep '^<widget' \
+		| sed 's|^.*version="\([^"]\+\)".*|var cordova_app_version = "\1";|' \
+		> www/version.js
 
 .build/make-js: $(alljs) $(allcss)
 	@cd ../js && make
