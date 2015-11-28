@@ -19,6 +19,13 @@ var download_blob = function(blob, options)
 {
 	options || (options = {});
 
+	// -------------------------------------------------------------------------
+	// NOTE: this not only doesn't really work at all, it screws up the indexeddb
+	// database in the app. holding out for a better way to handle files.
+	barfr.barf('Viewing files on mobile is currently broken. We\'re working on a fix. Sorry for the trouble!');
+	return;
+	// -------------------------------------------------------------------------
+
 	var url;
 	return new Promise(function(resolve, reject) {
 		var name = options.name || 'download';
