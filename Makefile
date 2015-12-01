@@ -1,5 +1,9 @@
 .PHONY: all clean run-android release-android build-android prepare-android compile-android config-release config-restore
 
+MOBILE_VERSION = $(shell cat config.xml \
+					| grep '^<widget' \
+					| sed 's|^.*version="\([^"]\+\)".*|\1|')
+
 allcss = $(shell find ../js/css/ -name "*.css" \
 			| grep -v 'reset.css')
 alljs = $(shell echo "../js/main.js" \
@@ -44,10 +48,7 @@ www/app/index.html: $(alljs) $(allcss) ../js/index.html
 
 www/version.js: ./scripts/gen-index ./config.xml
 	@echo "- www/version.js: " $?
-	@cat config.xml \
-		| grep '^<widget' \
-		| sed 's|^.*version="\([^"]\+\)".*|var cordova_app_version = "\1";|' \
-		> www/version.js
+	@echo "var cordova_app_version = '$(MOBILE_VERSION)';" > www/version.js
 
 .build/make-js: $(alljs) $(allcss)
 	@cd ../js && make
