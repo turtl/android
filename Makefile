@@ -10,20 +10,23 @@ alljs = $(shell echo "../js/main.js" \
 			&& find ../js/{config,controllers,handlers,library,models,turtl} -name "*.js" \
 			| grep -v '(ignore|\.thread\.)')
 
+BUILDFLAGS = 
+
 all: .build/make-js www/index.html www/version.js
 
 run-android: all
 	./scripts/cordova.sh run android
 
+release-android: BUILDFLAGS += --release
 release-android: config-release build-android config-restore
 
 build-android: compile-android
 
 compile-android: prepare-android
-	./scripts/cordova.sh compile android
+	./scripts/cordova.sh compile android $(BUILDFLAGS)
 
 prepare-android: all
-	./scripts/cordova.sh prepare android
+	./scripts/cordova.sh prepare android $(BUILDFLAGS)
 
 config-release: all
 	cp www/config.js .build/config.js.tmp
