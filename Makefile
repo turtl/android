@@ -1,4 +1,8 @@
-.PHONY: all clean run-android release-android build-android prepare-android compile-android config-release config-restore
+ANDROID_SIGN_ALIAS = 
+BUILDFLAGS = 
+
+# non-versioned include
+-include vars.mk
 
 MOBILE_VERSION = $(shell cat config.xml \
 					| grep '^<widget' \
@@ -10,7 +14,10 @@ alljs = $(shell echo "../js/main.js" \
 			&& find ../js/{config,controllers,handlers,library,models,turtl} -name "*.js" \
 			| grep -v '(ignore|\.thread\.)')
 
-BUILDFLAGS = 
+.PHONY: all clean run-android release-android build-android prepare-android compile-android config-release config-restore
+
+ANDROID_UNSIGNED = platforms/android/build/outputs/apk/android-armv7-release-unsigned.apk
+ANDROID_SIGNED = platforms/android/build/outputs/apk/android-armv7-release.apk
 
 all: .build/make-js www/index.html www/version.js
 
@@ -19,6 +26,18 @@ run-android: all
 
 release-android: BUILDFLAGS += --release
 release-android: config-release build-android config-restore
+	jarsigner \
+		-verbose \
+		-sigalg SHA1withRSA \
+		-digestalg SHA1 \
+		-keystore ../certs/turtl-android.keystore \
+		$(ANDROID_UNSIGNED) \
+		$(ANDROID_SIGN_ALIAS)
+	rm -f $(ANDROID_SIGNED)
+	zipalign \
+		-v 4 \
+		$(ANDROID_UNSIGNED) \
+		$(ANDROID_SIGNED)
 
 build-android: compile-android
 
@@ -42,6 +61,7 @@ www/app/index.html: $(alljs) $(allcss) ../js/index.html
 			--exclude=node_modules \
 			--exclude=.git \
 			--exclude=.build \
+			--exclude=tests \
 			--delete \
 			--delete-excluded \
 			--checksum \
