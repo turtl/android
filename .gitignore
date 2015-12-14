@@ -1,7 +1,8 @@
-node_modules
-platforms/
-plugins/
-www/version.js
+/vars.mk
+/node_modules
+/platforms/
+/plugins/
+/www/version.js
 
 *.apk
 *.ap_
