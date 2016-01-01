@@ -14,13 +14,16 @@ alljs = $(shell echo "../js/main.js" \
 			&& find ../js/{config,controllers,handlers,library,models,turtl} -name "*.js" \
 			| grep -v '(ignore|\.thread\.)')
 
-.PHONY: all clean run-android release-android build-android prepare-android compile-android config-release config-restore
+.PHONY: all clean run-android release-android build-android prepare-android compile-android run-ios release-ios build-ios prepare-ios compile-ios config-release config-restore
 
 ANDROID_UNSIGNED = platforms/android/build/outputs/apk/android-armv7-release-unsigned.apk
 ANDROID_SIGNED = platforms/android/build/outputs/apk/android-armv7-release.apk
 
 all: .build/make-js www/index.html www/version.js
 
+# ------------------------------------------------------------------------------
+# Android
+# ------------------------------------------------------------------------------
 run-android: all
 	./scripts/cordova.sh run android
 
@@ -47,6 +50,27 @@ compile-android: prepare-android
 prepare-android: all
 	./scripts/cordova.sh prepare android $(BUILDFLAGS)
 
+# ------------------------------------------------------------------------------
+# iOS
+# ------------------------------------------------------------------------------
+run-ios: all
+	./scripts/cordova.sh run ios
+
+release-ios: BUILDFLAGS += --release
+release-ios: config-release build-ios config-restore
+	# do extra ios signing/packaging (see release-android)
+
+build-ios: compile-ios
+
+compile-ios: prepare-ios
+	./scripts/cordova.sh compile ios $(BUILDFLAGS)
+
+prepare-ios: all
+	./scripts/cordova.sh prepare ios $(BUILDFLAGS)
+
+# ------------------------------------------------------------------------------
+# shared
+# ------------------------------------------------------------------------------
 config-release: all
 	cp www/config.js .build/config.js.tmp
 	cp www/config.live.js www/config.js
