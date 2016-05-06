@@ -14,7 +14,7 @@ alljs = $(shell echo "../js/main.js" \
 			&& find ../js/{config,controllers,handlers,library,models,turtl} -name "*.js" \
 			| grep -v '(ignore|\.thread\.)')
 
-.PHONY: all clean run-android release-android build-android prepare-android compile-android run-ios release-ios build-ios prepare-ios compile-ios config-release config-restore
+.PHONY: all clean run-android release-android build-android prepare-android compile-android fdroid release-fdroid run-ios release-ios build-ios prepare-ios compile-ios config-release config-restore
 
 ANDROID_UNSIGNED = platforms/android/build/outputs/apk/android-armv7-release-unsigned.apk
 ANDROID_SIGNED = platforms/android/build/outputs/apk/android-armv7-release.apk
@@ -49,6 +49,21 @@ compile-android: prepare-android
 
 prepare-android: all
 	./scripts/cordova.sh prepare android $(BUILDFLAGS)
+
+#fdroid: build-android
+fdroid:
+	rsync \
+		-avz \
+		--delete \
+		--delete-excluded \
+		--checksum \
+		--exclude='build/' \
+		--exclude='android/build/' \
+		--exclude='.gradle/' \
+		platforms/android/ ../fdroid/app
+
+release-fdroid: fdroid
+	cd ../fdroid && ./scripts/release $(MOBILE_VERSION)
 
 # ------------------------------------------------------------------------------
 # iOS
