@@ -14,7 +14,7 @@ alljs = $(shell echo "../js/main.js" \
 			&& find ../js/{config,controllers,handlers,library,models,turtl} -name "*.js" \
 			| grep -v '(ignore|\.thread\.)')
 
-.PHONY: all clean run-android release-android build-android prepare-android compile-android fdroid release-fdroid run-ios release-ios build-ios prepare-ios compile-ios config-release config-restore
+.PHONY: all clean run-android release-android build-android prepare-android compile-android fdroid release-fdroid run-ios release-ios build-ios prepare-ios compile-ios config-release config-restore refresh-cache-plugin
 
 ANDROID_UNSIGNED = platforms/android/build/outputs/apk/android-armv7-release-unsigned.apk
 ANDROID_SIGNED = platforms/android/build/outputs/apk/android-armv7-release.apk
@@ -120,6 +120,10 @@ www/version.js: ./scripts/gen-index ./config.xml
 www/index.html: www/app/index.html ./scripts/gen-index
 	@echo "- index.html: " $?
 	@./scripts/gen-index
+
+refresh-cache-plugin:
+	cordova plugin remove com.lyonbros.securecache
+	cordova plugin add https://github.com/lyonbros/cordova-plugin-secure-cache.git
 
 clean:
 	rm -rf www/app
