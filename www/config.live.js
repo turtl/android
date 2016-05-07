@@ -9,6 +9,7 @@ Object.merge(config, {
 	version: cordova_app_version,
 	cookie_login: false,
 	catch_global_errors: true,
-	base_url: window.location.toString().replace(/\/(index\.html)?$/, '/app')
+	base_url: window.location.toString().replace(/\/(index\.html)?$/, '/app'),
+	is_mobile: true
 });
 
