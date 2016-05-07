@@ -10,6 +10,6 @@ Object.merge(config, {
 	cookie_login: false,
 	catch_global_errors: true,
 	base_url: window.location.toString().replace(/\/(index\.html)?$/, '/app'),
-	is_mobile: true
+	has_autologin: true
 });
 

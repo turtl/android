@@ -41,6 +41,7 @@ js="${js}\n<script src=\"../version.js\"></script>"
 js="${js}\n<script src=\"../config.js\"></script>"
 js="${js}\n<script src=\"../events.js\"></script>"
 js="${js}\n<script src=\"../download.js\"></script>"
+js="${js}\n<script src=\"../autologin.js\"></script>"
 
 ## -----------------------------------------------------------------------------
 ## put it all together
