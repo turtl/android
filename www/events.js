@@ -2,7 +2,11 @@ document.addEventListener('deviceready', function() {
 	document.addEventListener('backbutton', function(e) {
 		log.debug('cordova: event: back', e);
 		if(!turtl || !turtl.back) return true;
-		if(turtl.back.empty()) return true;
+		if(turtl.back.empty())
+		{
+			navigator.Backbutton.goBack(function() {}, function(err) { log.error('turtl: mobile: back:', derr(err)); });
+			return;
+		}
 
 		e.stopPropagation();
 		e.preventDefault();

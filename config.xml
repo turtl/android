@@ -34,4 +34,5 @@
     <preference name="xwalkMultipleApk" value="true" />
     <preference name="xwalkSupportMultipleWindows" value="true" />
     <plugin name="com.lyonbros.securecache" spec="https://github.com/lyonbros/cordova-plugin-secure-cache.git" />
+    <plugin name="cordova-plugin-backbutton" spec="https://github.com/mohamed-salah/phonegap-backbutton-plugin.git" />
 </widget>
