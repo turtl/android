@@ -29,6 +29,12 @@
 				if(err) return log.error('securecache: problem caching auth', err);
 			});
 		});
+		turtl.events.bind('user:logout', function() {
+			if(!auto_login_enabled) return;
+			SecureCache.wipe(function(err, res) {
+				if(err) return log.error('securecache: problem wiping cache', err);
+			});
+		});
 
 		// try to auto-login right at the start
 		log.info('turtl: mobile: auto-login');
