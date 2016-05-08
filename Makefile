@@ -127,5 +127,6 @@ refresh-cache-plugin:
 
 clean:
 	rm -rf www/app
-	rm www/index.html
+	rm -rf platforms/android/build platforms/android/CordovaLib/build
+	rm -f www/index.html
 
