@@ -16,7 +16,6 @@ git clone https://github.com/turtl/mobile.git
 cd js/
 npm install
 cd ../mobile/
-npm install
 ```
 
 So we grab our Turtl js project's source and the mobile source as siblings (with
