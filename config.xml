@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.lyonbros.turtl" version="0.6.4" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.lyonbros.turtl" version="0.6.5" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Turtl</name>
     <description>The safe way to remember everything.</description>
-    <author email="info@turtl.it" href="https://turtl.it">Lyon Bros. Enterprises, LLC</author>
+    <author email="info@turtlapp.com" href="https://turtlapp.com">Lyon Bros. Enterprises, LLC</author>
     <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
@@ -13,7 +13,7 @@
     <allow-intent href="geo:*" />
     <platform name="android">
         <allow-intent href="market:*" />
-        <preference name="android-minSdkVersion" value="16" />
+        <preference name="android-minSdkVersion" value="20" />
         <icon src="www/app/images/favicon.128.png" />
     </platform>
     <platform name="ios">
@@ -21,18 +21,12 @@
         <allow-intent href="itms-apps:*" />
         <icon src="www/app/images/favicon.128.png" />
     </platform>
-    <engine name="android" spec="4.0.2" />
-    <plugin name="cordova-plugin-crosswalk-webview" spec="~1.4.0" />
+    <feature name="http://api.phonegap.com/1.0/camera" />
+    <feature name="http://api.phonegap.com/1.0/file" />
+    <engine name="android" spec="^6.3.0" />
     <plugin name="cordova-plugin-whitelist" spec="~1.0.0" />
     <plugin name="cordova-plugin-camera" spec="~1.2.0" />
     <plugin name="cordova-plugin-file" spec="~3.0.0" />
-    <feature name="http://api.phonegap.com/1.0/camera" />
-    <feature name="http://api.phonegap.com/1.0/file" />
-    <preference name="xwalkVersion" value="15+" />
-    <preference name="xwalkCommandLine" value="--disable-pull-to-refresh-effect" />
-    <preference name="xwalkMode" value="embedded" />
-    <preference name="xwalkMultipleApk" value="true" />
-    <preference name="xwalkSupportMultipleWindows" value="true" />
     <plugin name="com.lyonbros.securecache" spec="https://github.com/lyonbros/cordova-plugin-secure-cache.git" />
     <plugin name="cordova-plugin-backbutton" spec="https://github.com/mohamed-salah/phonegap-backbutton-plugin.git" />
 </widget>

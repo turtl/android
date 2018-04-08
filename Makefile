@@ -6,7 +6,7 @@ BUILDFLAGS =
 
 MOBILE_VERSION = $(shell cat config.xml \
 					| grep '^<widget' \
-					| sed 's|^.*version="\([^"]\+\)".*|\1|')
+					| sed -E 's|^.*version="([^"]+)".*|\1|')
 
 allcss = $(shell find ../js/css/ -name "*.css" \
 			| grep -v 'reset.css')
@@ -46,6 +46,7 @@ build-android: compile-android
 
 compile-android: prepare-android
 	./scripts/cordova.sh compile android $(BUILDFLAGS)
+	#cordova compile android $(BUILDFLAGS)
 
 prepare-android: all
 	./scripts/cordova.sh prepare android $(BUILDFLAGS)
@@ -53,7 +54,7 @@ prepare-android: all
 #fdroid: build-android
 fdroid:
 	rsync \
-		-avz \
+		-avzz \
 		--delete \
 		--delete-excluded \
 		--checksum \
@@ -96,7 +97,7 @@ config-restore:
 www/app/index.html: $(alljs) $(allcss) ../js/index.html
 	@echo "- rsync project: " $?
 	@rsync \
-			-az \
+			-azz \
 			--exclude=node_modules \
 			--exclude=.git \
 			--exclude=.build \

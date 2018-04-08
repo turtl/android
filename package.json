@@ -1,0 +1,25 @@
+{
+  "name": "com.lyonbros.turtl",
+  "version": "0.6.5",
+  "displayName": "Turtl",
+  "dependencies": {
+    "com.lyonbros.securecache": "https://github.com/lyonbros/cordova-plugin-secure-cache.git",
+    "cordova-android": "^6.3.0",
+    "cordova-plugin-backbutton": "https://github.com/mohamed-salah/phonegap-backbutton-plugin.git",
+    "cordova-plugin-camera": "~1.2.0",
+    "cordova-plugin-file": "~3.0.0",
+    "cordova-plugin-whitelist": "~1.0.0"
+  },
+  "cordova": {
+    "platforms": [
+      "android"
+    ],
+    "plugins": {
+      "cordova-plugin-whitelist": {},
+      "cordova-plugin-camera": {},
+      "cordova-plugin-file": {},
+      "com.lyonbros.securecache": {},
+      "cordova-plugin-backbutton": {}
+    }
+  }
+}
