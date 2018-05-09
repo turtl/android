@@ -23,6 +23,12 @@ the name "js" preserved...renaming `js` to something else will break the build).
 
 ## Building
 
+Before you can build, you have to make sure the file `config.js` exists in the proper place. It's safe to use the default settings by running:
+
+```bash
+cp ./www/app/config/config.js.default  ./www/app/config/config.js
+```
+
 The build is done via a makefile. There are a number of targets, but the main
 one we care about is `release-android`:
 
