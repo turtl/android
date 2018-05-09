@@ -1,8 +1,12 @@
-ANDROID_SIGN_ALIAS = 
-BUILDFLAGS = 
+.PHONY: all clean run-android release-android build-android prepare-android compile-android fdroid release-fdroid run-ios release-ios build-ios prepare-ios compile-ios config-release config-restore refresh-cache-plugin urn
 
 # non-versioned include
 -include vars.mk
+
+export SHELL := /bin/bash
+export BUILD := build
+
+mkdir = @mkdir -p $(dir $@)
 
 MOBILE_VERSION = $(shell cat config.xml \
 					| grep '^<widget' \
@@ -11,15 +15,13 @@ MOBILE_VERSION = $(shell cat config.xml \
 allcss = $(shell find ../js/css/ -name "*.css" \
 			| grep -v 'reset.css')
 alljs = $(shell echo "../js/main.js" \
-			&& find ../js/{config,controllers,handlers,library,models,turtl} -name "*.js" \
+			&& find ../js/{config,controllers,handlers,lib,models} -name "*.js" \
 			| grep -v '(ignore|\.thread\.)')
-
-.PHONY: all clean run-android release-android build-android prepare-android compile-android fdroid release-fdroid run-ios release-ios build-ios prepare-ios compile-ios config-release config-restore refresh-cache-plugin
 
 ANDROID_UNSIGNED = platforms/android/build/outputs/apk/android-armv7-release-unsigned.apk
 ANDROID_SIGNED = platforms/android/build/outputs/apk/android-armv7-release.apk
 
-all: .build/make-js www/index.html www/version.js
+all: $(BUILD)/make-js www/index.html www/version.js
 
 # ------------------------------------------------------------------------------
 # Android
@@ -51,71 +53,39 @@ compile-android: prepare-android
 prepare-android: all
 	./scripts/cordova.sh prepare android $(BUILDFLAGS)
 
-#fdroid: build-android
-fdroid:
-	rsync \
-		-avzz \
-		--delete \
-		--delete-excluded \
-		--checksum \
-		--exclude='build/' \
-		--exclude='android/build/' \
-		--exclude='.gradle/' \
-		platforms/android/ ../fdroid/app
-
-release-fdroid: fdroid
-	cd ../fdroid && ./scripts/release $(MOBILE_VERSION)
-
-# ------------------------------------------------------------------------------
-# iOS
-# ------------------------------------------------------------------------------
-run-ios: all
-	./scripts/cordova.sh run ios
-
-release-ios: BUILDFLAGS += --release
-release-ios: config-release build-ios config-restore
-	# do extra ios signing/packaging (see release-android)
-
-build-ios: compile-ios
-
-compile-ios: prepare-ios
-	./scripts/cordova.sh compile ios $(BUILDFLAGS)
-
-prepare-ios: all
-	./scripts/cordova.sh prepare ios $(BUILDFLAGS)
-
 # ------------------------------------------------------------------------------
 # shared
 # ------------------------------------------------------------------------------
 config-release: all
-	cp www/config.js .build/config.js.tmp
+	cp www/config.js $(BUILD)/config.js.tmp
 	cp www/config.live.js www/config.js
 
 config-restore:
-	mv .build/config.js.tmp www/config.js
+	mv $(BUILD)/config.js.tmp www/config.js
 
 www/app/index.html: $(alljs) $(allcss) ../js/index.html
+	$(mkdir)
 	@echo "- rsync project: " $?
 	@rsync \
 			-azz \
 			--exclude=node_modules \
 			--exclude=.git \
-			--exclude=.build \
 			--exclude=tests \
 			--delete \
 			--delete-excluded \
 			--checksum \
 			../js/ \
 			www/app
-	@touch www/app/index.html
+	@touch $@
 
 www/version.js: ./scripts/gen-index ./config.xml
 	@echo "- www/version.js: " $?
 	@echo "var cordova_app_version = '$(MOBILE_VERSION)';" > www/version.js
 
-.build/make-js: $(alljs) $(allcss)
+$(BUILD)/make-js: $(alljs) $(allcss)
+	$(mkdir)
 	@cd ../js && make
-	@touch .build/make-js
+	@touch $@
 
 # if the app's index changed, we know to change this one
 www/index.html: www/app/index.html ./scripts/gen-index
@@ -126,8 +96,12 @@ refresh-cache-plugin:
 	cordova plugin remove com.lyonbros.securecache
 	cordova plugin add https://github.com/lyonbros/cordova-plugin-secure-cache.git
 
+urn: 
+	@echo "Is there a Ralphs around here?"
+
 clean:
 	rm -rf www/app
+	rm -rf $(BUILD)
 	rm -rf platforms/android/build platforms/android/CordovaLib/build
 	rm -f www/index.html
 

@@ -1,8 +1,12 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.lyonbros.turtl" version="0.6.5" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.lyonbros.turtl" version="0.7.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Turtl</name>
-    <description>The safe way to remember everything.</description>
-    <author email="info@turtlapp.com" href="https://turtlapp.com">Lyon Bros. Enterprises, LLC</author>
+    <description>
+		A privacy-focused note-taking application.
+    </description>
+    <author email="andrew@turtlapp.com" href="https://turtlapp.com">
+		Andrew Lyon
+    </author>
     <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
@@ -16,17 +20,7 @@
         <preference name="android-minSdkVersion" value="20" />
         <icon src="www/app/images/favicon.128.png" />
     </platform>
-    <platform name="ios">
-        <allow-intent href="itms:*" />
-        <allow-intent href="itms-apps:*" />
-        <icon src="www/app/images/favicon.128.png" />
-    </platform>
-    <feature name="http://api.phonegap.com/1.0/camera" />
-    <feature name="http://api.phonegap.com/1.0/file" />
+    <plugin name="cordova-plugin-whitelist" spec="1" />
+    <plugin name="com.lyonbros.securecache" spec="https://github.com/lyonbros/cordova-plugin-secure-cache" />
     <engine name="android" spec="^6.3.0" />
-    <plugin name="cordova-plugin-whitelist" spec="~1.0.0" />
-    <plugin name="cordova-plugin-camera" spec="~1.2.0" />
-    <plugin name="cordova-plugin-file" spec="~3.0.0" />
-    <plugin name="com.lyonbros.securecache" spec="https://github.com/lyonbros/cordova-plugin-secure-cache.git" />
-    <plugin name="cordova-plugin-backbutton" spec="https://github.com/mohamed-salah/phonegap-backbutton-plugin.git" />
 </widget>

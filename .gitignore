@@ -5,6 +5,7 @@
 /www/version.js
 *.apk
 *.ap_
+build/*
 .DS_Store
 ._*
 
