@@ -5,12 +5,8 @@
   "main": "www/core.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/turtl/cordova-plugin-turtl-core.git"
+    "url": "git+https://github.com/turtl/mobile.git"
   },
   "author": "Andrew Lyon <andrew@lyonbros.com>",
-  "license": "GPLv3",
-  "bugs": {
-    "url": "https://github.com/turtl/cordova-plugin-turtl-core/issues"
-  },
-  "url": "https://github.com/turtl/cordova-plugin-turtl-core"
+  "license": "GPLv3"
 }

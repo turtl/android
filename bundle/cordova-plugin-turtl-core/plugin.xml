@@ -25,8 +25,8 @@
 		</config-file>
 
 		<source-file src="src/android/TurtlCorePlugin.java" target-dir="src/com/lyonbros/turtl-core/" />
-		<source-file src="src/android/libs/arm64-v8a/libturtl_core.so" target-dir="libs/arm64-v8a" />
-		<source-file src="src/android/libs/armeabi/libturtl_core.so" target-dir="libs/armeabi-v7a" />
+		<source-file src="src/android/libs/arm64-v8a/libturtl_core.canary.so" target-dir="libs/arm64-v8a" />
+		<source-file src="src/android/libs/armeabi-v7a/libturtl_core.canary.so" target-dir="libs/armeabi-v7a" />
 	</platform>
 </plugin>
 
