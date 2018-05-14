@@ -1,4 +1,4 @@
-.PHONY: all clean run-android release-android build-android prepare-android compile-android fdroid release-fdroid run-ios release-ios build-ios prepare-ios compile-ios config-release config-restore refresh-cache-plugin urn
+.PHONY: all clean run-android release-android build-android prepare-android compile-android fdroid release-fdroid run-ios release-ios build-ios prepare-ios compile-ios config-release config-restore refresh-cache-plugin refresh-core-plugin urn
 
 # non-versioned include
 -include vars.mk
@@ -20,12 +20,17 @@ alljs = $(shell echo "../js/main.js" \
 
 ANDROID_UNSIGNED = platforms/android/build/outputs/apk/android-armv7-release-unsigned.apk
 ANDROID_SIGNED = platforms/android/build/outputs/apk/android-armv7-release.apk
+ANDROID_NATIVE = $(shell find native/android/ -type f -name "*so" | sed 's|native/android/|platforms/android/libs/|')
 
-all: $(BUILD)/make-js www/index.html www/version.js
+all: $(BUILD)/make-js www/index.html www/version.js $(ANDROID_NATIVE)
 
 # ------------------------------------------------------------------------------
 # Android
 # ------------------------------------------------------------------------------
+platforms/android/libs/%/libturtl_core.so: native/android/%/libturtl_core.so
+	$(mkdir)
+	cp $^ $@
+
 run-android: all
 	./scripts/cordova.sh run android
 
@@ -96,7 +101,11 @@ refresh-cache-plugin:
 	cordova plugin remove com.lyonbros.securecache
 	cordova plugin add https://github.com/lyonbros/cordova-plugin-secure-cache.git
 
-urn: 
+refresh-core-plugin:
+	cordova plugin remove com.lyonbros.turtlcore
+	cordova plugin add bundle/cordova-plugin-turtl-core/
+
+urn:
 	@echo "Is there a Ralphs around here?"
 
 clean:

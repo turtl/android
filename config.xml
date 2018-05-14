@@ -17,10 +17,11 @@
     <allow-intent href="geo:*" />
     <platform name="android">
         <allow-intent href="market:*" />
-        <preference name="android-minSdkVersion" value="20" />
+        <preference name="android-minSdkVersion" value="21" />
         <icon src="www/app/images/favicon.128.png" />
     </platform>
     <plugin name="cordova-plugin-whitelist" spec="1" />
     <plugin name="com.lyonbros.securecache" spec="https://github.com/lyonbros/cordova-plugin-secure-cache" />
     <engine name="android" spec="^6.3.0" />
+    <plugin name="com.lyonbros.turtlcore" spec="bundle/cordova-plugin-turtl-core/" />
 </widget>

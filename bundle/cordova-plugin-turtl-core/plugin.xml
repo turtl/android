@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	id="com.lyonbros.turtl-core"
+	id="com.lyonbros.turtlcore"
 	version="0.1.0">
 	<name>TurtlCore</name>
 	<description>An interface to the Turtl core library</description>
@@ -15,7 +15,7 @@
 	<platform name="android">
 		<config-file target="res/xml/config.xml" parent="/*">
 			<feature name="TurtlCore">
-				<param name="android-package" value="com.lyonbros.turtl-core.TurtlCorePlugin" />
+				<param name="android-package" value="com.lyonbros.turtlcore.TurtlCorePlugin" />
 				<param name="onload" value="true" />
 			</feature>
 		</config-file>
@@ -24,9 +24,8 @@
 			<uses-permission android:name="android.permission.INTERNET" />
 		</config-file>
 
-		<source-file src="src/android/TurtlCorePlugin.java" target-dir="src/com/lyonbros/turtl-core/" />
-		<source-file src="src/android/libs/arm64-v8a/libturtl_core.canary.so" target-dir="libs/arm64-v8a" />
-		<source-file src="src/android/libs/armeabi-v7a/libturtl_core.canary.so" target-dir="libs/armeabi-v7a" />
+		<source-file src="src/android/com/lyonbros/turtlcore/TurtlCorePlugin.java" target-dir="src/com/lyonbros/turtlcore/" />
+		<source-file src="src/android/com/lyonbros/turtlcore/TurtlCoreNative.java" target-dir="src/com/lyonbros/turtlcore/" />
 	</platform>
 </plugin>
 
