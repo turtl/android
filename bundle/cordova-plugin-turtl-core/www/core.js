@@ -1,39 +1,52 @@
-var SecureCache = (function() {
-	var exec = function(action, cb, args)
-	{
-		cordova.exec(function(res) { cb(null, res); }, function(err) { cb(err, null); }, 'SecureCache', action, args);
+var TurtlCore = (function() {
+	var exec = function(action, args) {
+		return new Promise(function(resolve, reject) {
+			cordova.exec(
+				function(res) {
+					resolve(res);
+				},
+				function(err) {
+					reject(err);
+				},
+				'TurtlCorePlugin',
+				action,
+				args
+			);
+		});
 	};
 
-	this.foreground = function(title, text, cb)
-	{
-		exec('foreground', cb, [title, text]);
+	this.start = function(config) {
+		return exec('start', [config]);
 	};
 
-	this.unforeground = function(cb)
-	{
-		exec('unforeground', cb, []);
+	this.send = function(msg) {
+		return exec('send', [msg]);
 	};
 
-	this.set = function(data, cb)
-	{
-		exec('set', cb, [data]);
+	this.recv = function(mid) {
+		var args = [];
+		if(mid) args.push(mid);
+		return exec('recv', args);
 	};
 
-	this.wipe = function(cb)
-	{
-		exec('wipe', cb, []);
-	}
-
-	this.get = function(cb)
-	{
-		exec('get', cb, []);
+	this.recv_nb = function(mid) {
+		var args = [];
+		if(mid) args.push(mid);
+		return exec('recv_nb', args);
 	};
 
-	this.stop = function(cb)
-	{
-		exec('stop', cb, []);
-	}
+	this.recv_event = function() {
+		return exec('recv_event', []);
+	};
+
+	this.recv_event_nb = function() {
+		return exec('recv_event_nb', []);
+	};
+
+	this.lasterr = function() {
+		return exec('lasterr', []);
+	};
 });
 
-module.exports = new SecureCache();
+module.exports = new TurtlCore();
 

@@ -14,7 +14,7 @@
 
 	<platform name="android">
 		<config-file target="res/xml/config.xml" parent="/*">
-			<feature name="TurtlCore">
+			<feature name="TurtlCorePlugin">
 				<param name="android-package" value="com.lyonbros.turtlcore.TurtlCorePlugin" />
 				<param name="onload" value="true" />
 			</feature>

@@ -7,8 +7,9 @@ public class TurtlCoreNative {
 	private static native byte[] recv_nb(String mid);
 	private static native byte[] recv_event();
 	private static native byte[] recv_event_nb();
+	private static native String lasterr();
 
-	static {
+	public static void loadLibrary() {
 		System.loadLibrary("turtl_core");
 	}
 
@@ -29,6 +30,9 @@ public class TurtlCoreNative {
 	}
 	public static byte[] recvEventNb() {
 		return recv_event_nb();
+	}
+	public static String lastError() {
+		return lasterr();
 	}
 }
 
