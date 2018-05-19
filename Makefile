@@ -22,7 +22,7 @@ ANDROID_UNSIGNED = platforms/android/build/outputs/apk/android-armv7-release-uns
 ANDROID_SIGNED = platforms/android/build/outputs/apk/android-armv7-release.apk
 ANDROID_NATIVE = $(shell find native/android/ -type f -name "*so" | sed 's|native/android/|platforms/android/libs/|')
 
-all: $(BUILD)/make-js www/index.html www/version.js $(ANDROID_NATIVE)
+all: www/index.html $(ANDROID_NATIVE)
 
 # ------------------------------------------------------------------------------
 # Android
@@ -70,6 +70,7 @@ config-restore:
 
 www/app/index.html: $(alljs) $(allcss) ../js/index.html
 	$(mkdir)
+	@cd ../js && make
 	@echo "- rsync project: " $?
 	@rsync \
 			-azz \
@@ -87,13 +88,12 @@ www/version.js: ./scripts/gen-index ./config.xml
 	@echo "- www/version.js: " $?
 	@echo "var cordova_app_version = '$(MOBILE_VERSION)';" > www/version.js
 
-$(BUILD)/make-js: $(alljs) $(allcss)
-	$(mkdir)
-	@cd ../js && make
-	@touch $@
+www/config-core.js: ../core/config.yaml.default
+	@echo -n "var turtl_core_config = " > $@
+	./node_modules/.bin/js-yaml $^ >> $@
 
 # if the app's index changed, we know to change this one
-www/index.html: www/app/index.html ./scripts/gen-index
+www/index.html: www/app/index.html ./scripts/gen-index www/version.js www/config-core.js
 	@echo "- index.html: " $?
 	@./scripts/gen-index
 

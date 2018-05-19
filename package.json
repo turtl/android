@@ -18,5 +18,8 @@
       "com.lyonbros.securecache": {},
       "com.lyonbros.turtlcore": {}
     }
+  },
+  "devDependencies": {
+    "js-yaml": "^3.11.0"
   }
 }

@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.lyonbros.turtl" version="0.7.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.lyonbros.turtl" version="0.7.0" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Turtl</name>
     <description>
 		A privacy-focused note-taking application.
@@ -16,12 +16,15 @@
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
     <platform name="android">
+        <config-file parent="/*" target="AndroidManifest.xml">
+            <uses-permission android:name="android.permission.INTERNET" />
+        </config-file>
         <allow-intent href="market:*" />
         <preference name="android-minSdkVersion" value="21" />
         <icon src="www/app/images/favicon.128.png" />
     </platform>
     <plugin name="cordova-plugin-whitelist" spec="1" />
     <plugin name="com.lyonbros.securecache" spec="https://github.com/lyonbros/cordova-plugin-secure-cache" />
-    <engine name="android" spec="^6.3.0" />
     <plugin name="com.lyonbros.turtlcore" spec="bundle/cordova-plugin-turtl-core/" />
+    <engine name="android" spec="^6.3.0" />
 </widget>
