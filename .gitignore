@@ -3,6 +3,7 @@
 /platforms/
 /plugins/
 /www/version.js
+/www/config-core.js
 *.apk
 *.ap_
 build/*
