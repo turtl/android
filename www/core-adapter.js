@@ -107,12 +107,14 @@ CoreComm.adapters.mobile = Composer.Event.extend({
 // fix some bullshit timing issues.
 var core_poller = setInterval(function() {
 	if(!window.TurtlCore) return;
+	if(!window.openssl_cert_file) return;
 	var datadir = cordova.file.dataDirectory;
 	if(!datadir) return;
 	datadir = datadir.replace(/^.*?:\/\//, '').replace(/\/+$/, '')+'/core';
 
 	clearInterval(core_poller);
 	TurtlCore = window.TurtlCore;
+	var cert_file = window.openssl_cert_file;
 	var config = Composer.object.clone(turtl_core_config, {deep: true});
 	if(!config.logging) config.logging = {};
 	config.logging.level = 'info';
@@ -120,6 +122,7 @@ var core_poller = setInterval(function() {
 	// the core has no real way of loading the config.yaml asset so we need to
 	// to just pass in our entire config as a runtime config. thanks, obama.
 	config.config_file = ':null:';
+	config.openssl_cert_file = cert_file;
 	return TurtlCore.start(JSON.stringify(config))
 		.then(function() {
 			core_init = true;

@@ -22,7 +22,7 @@ ANDROID_UNSIGNED = platforms/android/build/outputs/apk/android-armv7-release-uns
 ANDROID_SIGNED = platforms/android/build/outputs/apk/android-armv7-release.apk
 ANDROID_NATIVE = $(shell find native/android/ -type f -name "*so" | sed 's|native/android/|platforms/android/libs/|')
 
-all: www/index.html $(ANDROID_NATIVE)
+all: www/index.html
 
 # ------------------------------------------------------------------------------
 # Android
@@ -31,7 +31,7 @@ platforms/android/libs/%/libturtl_core.so: native/android/%/libturtl_core.so
 	$(mkdir)
 	cp $^ $@
 
-run-android: all
+run-android: all $(ANDROID_NATIVE) www/cacert.js
 	./scripts/cordova.sh run android
 
 release-android: BUILDFLAGS += --release
@@ -53,14 +53,19 @@ build-android: compile-android
 
 compile-android: prepare-android
 	./scripts/cordova.sh compile android $(BUILDFLAGS)
-	#cordova compile android $(BUILDFLAGS)
 
-prepare-android: all
+prepare-android: all $(ANDROID_NATIVE) www/cacert.js
 	./scripts/cordova.sh prepare android $(BUILDFLAGS)
 
 # ------------------------------------------------------------------------------
 # shared
 # ------------------------------------------------------------------------------
+www/cacert.js: cacert.pem
+	@echo "- $@: $^"
+	@echo "var turtl_core_openssl_pem = [" > $@
+	@cat $^ | sed 's|^|"|g' | sed 's|$$|",|g' >> $@
+	@echo "].join('\n');" >> $@
+
 config-release: all
 	cp www/config.js $(BUILD)/config.js.tmp
 	cp www/config.live.js www/config.js

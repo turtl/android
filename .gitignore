@@ -4,6 +4,7 @@
 /plugins/
 /www/version.js
 /www/config-core.js
+/www/cacert.js
 *.apk
 *.ap_
 build/*
