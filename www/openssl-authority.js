@@ -1,19 +1,22 @@
 "use strict";
+
+/**
+ * The entire purpose of this file is to load the bundled cacert.pem file and
+ * write it to a location that the native app can access. This is mainly in
+ * response to android forcing our hand and not providing the system certs in a
+ * standard location. So we have to bundle our own and point the app to them.
+ */
+
 var openssl_cert_file = false;
-(function() {
+document.addEventListener('deviceready', function() {
 	var poll_interval = setInterval(function() {
 		if(!cordova.file) return;
 		clearInterval(poll_interval);
 
-		function createFile(dirEntry, fileName, isAppend) {
-			dirEntry.getFile(fileName, {create: true, exclusive: false}, function(fileEntry) {
-				writeFile(fileEntry, null, isAppend);
-			}, onErrorCreateFile);
-		};
 		var write_certfile = function() {
 			return new Promise(function(resolve, reject) {
-				window.resolveLocalFileSystemURL(cordova.file.dataDirectory+'/core', function(dir) {
-					dir.getFile('cacert.pem', {create: true}, function(file) {
+				window.resolveLocalFileSystemURL(cordova.file.dataDirectory+'', function(dir) {
+					dir.getFile('cacert.pem', {create: true, exclusive: false}, function(file) {
 						file.createWriter(function(writer) {
 							var blob = new Blob([turtl_core_openssl_pem], {type: 'text/plain'});
 							writer.onwriteend = function() {
@@ -44,5 +47,5 @@ var openssl_cert_file = false;
 		};
 		setTimeout(openssl_main, 500);
 	}, 10);
-})();
+});
 
