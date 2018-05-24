@@ -37,6 +37,8 @@ var CoreMessenger = Composer.Event.extend({
 			.then(function(msg) {
 				if(!msg) return;
 				this.trigger('message', msg);
+				// if we got an event, poll immediately on next tick
+				setTimeout(this.poll_events.bind(this), 5);
 			})
 			.catch(function(err) {
 				log.error('CoreMessenger.poll_events() -- ', err);
