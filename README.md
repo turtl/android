@@ -1,6 +1,8 @@
 Turtl mobile
 ============
 
+_Opening an issue? See the [Turtl project tracker](https://github.com/turtl/project-tracker/issues)_
+
 Let's go over some basic build instructions.
 
 ## Setup
