@@ -10,7 +10,7 @@
 		var auto_login_enabled = false;
 		turtl.events.bind('auth:add-auto-login', function() {
 			log.info('turtl: mobile: add-auto-login');
-			SecureCache.foreground('Turtl', 'Stay logged in to Turtl', function(err, res) {
+			SecureCache.start(function(err, res) {
 				if(err) return log.error('securecache: problem starting login service', err);
 				auto_login_enabled = true;
 			});

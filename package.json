@@ -15,8 +15,8 @@
     ],
     "plugins": {
       "cordova-plugin-whitelist": {},
-      "com.lyonbros.securecache": {},
-      "com.lyonbros.turtlcore": {}
+      "com.lyonbros.turtlcore": {},
+      "com.lyonbros.securecache": {}
     }
   },
   "devDependencies": {
