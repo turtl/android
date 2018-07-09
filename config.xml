@@ -20,7 +20,7 @@
             <uses-permission android:name="android.permission.INTERNET" />
         </config-file>
         <allow-intent href="market:*" />
-        <preference name="android-minSdkVersion" value="21" />
+        <preference name="android-minSdkVersion" value="23" />
         <icon src="www/app/images/favicon.128.png" />
     </platform>
     <plugin name="cordova-plugin-whitelist" spec="1" />
