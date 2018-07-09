@@ -1,4 +1,4 @@
-.PHONY: all clean run-android release-android build-android prepare-android compile-android fdroid release-fdroid run-ios release-ios build-ios prepare-ios compile-ios config-release config-restore refresh-cache-plugin refresh-core-plugin urn
+.PHONY: all clean run release build prepare compile config-release config-restore refresh-core-plugin urn
 
 # non-versioned include
 -include vars.mk
@@ -31,30 +31,24 @@ platforms/android/libs/%/libturtl_core.so: native/android/%/libturtl_core.so
 	$(mkdir)
 	cp $^ $@
 
-run-android: all $(ANDROID_NATIVE) www/cacert.js
+run: all $(ANDROID_NATIVE) www/cacert.js
 	./scripts/cordova.sh run android
 
-release-android: BUILDFLAGS += --release
-release-android: config-release build-android config-restore
-	jarsigner \
-		-verbose \
-		-sigalg SHA1withRSA \
-		-digestalg SHA1 \
-		-keystore ../certs/turtl-android.keystore \
-		$(ANDROID_UNSIGNED) \
-		$(ANDROID_SIGN_ALIAS)
-	rm -f $(ANDROID_SIGNED)
-	zipalign \
-		-v 4 \
-		$(ANDROID_UNSIGNED) \
-		$(ANDROID_SIGNED)
+platforms/android/release-signing.properties: release-signing.properties.tpl
+	cat $< \
+		| sed "s|{{ANDROID_SIGN_KEYSTORE}}|$(ANDROID_SIGN_KEYSTORE)|g" \
+		| sed "s|{{ANDROID_SIGN_ALIAS}}|$(ANDROID_SIGN_ALIAS)|g" \
+		> $@
 
-build-android: compile-android
+release: BUILDFLAGS += --release
+release: platforms/android/release-signing.properties config-release build config-restore
 
-compile-android: prepare-android
+build: compile
+
+compile: prepare
 	./scripts/cordova.sh compile android $(BUILDFLAGS)
 
-prepare-android: all $(ANDROID_NATIVE) www/cacert.js
+prepare: all $(ANDROID_NATIVE) www/cacert.js
 	./scripts/cordova.sh prepare android $(BUILDFLAGS)
 
 # ------------------------------------------------------------------------------
@@ -67,6 +61,7 @@ www/cacert.js: cacert.pem
 	@echo "].join('\n');" >> $@
 
 config-release: all
+	@mkdir -p $(BUILD)
 	cp www/config.js $(BUILD)/config.js.tmp
 	cp www/config.live.js www/config.js
 
@@ -101,10 +96,6 @@ www/config-core.js: ../core/config.yaml.default
 www/index.html: www/app/index.html ./scripts/gen-index www/version.js www/config-core.js
 	@echo "- index.html: " $?
 	@./scripts/gen-index
-
-refresh-cache-plugin:
-	cordova plugin remove com.lyonbros.securecache
-	cordova plugin add https://github.com/lyonbros/cordova-plugin-secure-cache.git
 
 refresh-core-plugin:
 	cordova plugin remove com.lyonbros.turtlcore

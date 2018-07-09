@@ -44,7 +44,6 @@ js="${js}\n<script src=\"../events.js\"></script>"
 js="${js}\n<script src=\"../cacert.js\"></script>"
 js="${js}\n<script src=\"../openssl-authority.js\"></script>"
 js="${js}\n<script src=\"../download.js\"></script>"
-js="${js}\n<script src=\"../autologin.js\"></script>"
 js="${js}\n<script src=\"../core-adapter.js\"></script>"
 js="${js}\n<script src=\"../core-logs.js\"></script>"
 
