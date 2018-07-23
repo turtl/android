@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyProperties;
-import android.support.annotation.NonNull;
 import android.util.Base64;
 import android.util.Log;
 
@@ -62,7 +61,7 @@ public class SecurityStore {
      *                <code>this.cordova.getActivity().getApplicationContext();</code> otherwise
      *                each Activity is a valid context.
      */
-    @SuppressLint("HardwareIds")
+	@SuppressLint("HardwareIds")
     public SecurityStore(Context context) {
         this.preferences= PreferenceManager.getDefaultSharedPreferences(context);
     }
@@ -127,7 +126,6 @@ public class SecurityStore {
         return null;
     }
 
-    @NonNull
     private SecretKey createSecretKey(String keyname) throws NoSuchAlgorithmException,
             NoSuchProviderException, InvalidAlgorithmParameterException {
 
@@ -159,3 +157,4 @@ public class SecurityStore {
         return null;
     }
 }
+

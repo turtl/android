@@ -20,12 +20,9 @@
 			</feature>
 		</config-file>
 
-		<config-file target="AndroidManifest.xml" parent="/*">
-			<uses-permission android:name="android.permission.INTERNET" />
-		</config-file>
-
 		<source-file src="src/android/com/lyonbros/turtlstore/TurtlStorePlugin.java" target-dir="src/com/lyonbros/turtlstore/" />
 		<source-file src="src/android/com/lyonbros/turtlstore/SecurityStore.java" target-dir="src/com/lyonbros/turtlstore/" />
+		<source-file src="src/android/lib/build-extras.gradle" target-dir="src/.." />
 	</platform>
 </plugin>
 

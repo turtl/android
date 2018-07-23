@@ -11,7 +11,7 @@ public class TurtlStorePlugin extends CordovaPlugin {
 
 	@Override
 	public boolean execute(String action, JSONArray args, CallbackContext callback) throws JSONException {
-		final SecurityStore store = new SecurityStore(this.cordova.getContext());
+		final SecurityStore store = new SecurityStore(this.cordova.getActivity().getApplicationContext());
 
 		if(action.equals("save")) {
 			// TODO would be better to get a byte-array as input.
@@ -22,11 +22,11 @@ public class TurtlStorePlugin extends CordovaPlugin {
 		}
 
 		if(action.equals("load")) {
-		    byte[] key = store.loadKey();
-		    if(key == null) {
+			byte[] key = store.loadKey();
+			if(key == null) {
 				callback.error("No data found");
 			} else {
-		        callback.success(key);
+				callback.success(key);
 			}
 			return true;
 		}

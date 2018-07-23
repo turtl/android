@@ -24,6 +24,7 @@
         <icon src="www/app/images/favicon.128.png" />
     </platform>
     <plugin name="cordova-plugin-whitelist" spec="1" />
-    <engine name="android" spec="^6.3.0" />
     <plugin name="com.lyonbros.turtlcore" spec="bundle/cordova-plugin-turtl-core/" />
+    <plugin name="com.lyonbros.turtlstore" spec="bundle/cordova-plugin-turtl-store/" />
+    <engine name="android" spec="^6.3.0" />
 </widget>
