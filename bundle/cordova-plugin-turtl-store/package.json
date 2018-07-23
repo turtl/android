@@ -1,0 +1,12 @@
+{
+  "name": "cordova-plugin-turtl-store",
+  "version": "0.1.0",
+  "description": "A plugin that interfaces to store data safe.",
+  "main": "www/store.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/turtl/mobile.git"
+  },
+  "author": "Niels <opensource21@gmail.com",
+  "license": "GPLv3"
+}

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	id="com.lyonbros.turtlstore"
+	version="0.1.0">
+	<name>TurtlStore</name>
+	<description>A plugin that interfaces to store data safe.</description>
+	<license>GPLv3</license>
+	<keywords>native</keywords>
+
+	<js-module src="www/store.js" name="turtlstore">
+		<clobbers target="TurtlStore" />
+	</js-module>
+
+	<platform name="android">
+		<config-file target="res/xml/config.xml" parent="/*">
+			<feature name="TurtlStorePlugin">
+				<param name="android-package" value="com.lyonbros.turtlstore.TurtlStorePlugin" />
+				<param name="onload" value="true" />
+			</feature>
+		</config-file>
+
+		<config-file target="AndroidManifest.xml" parent="/*">
+			<uses-permission android:name="android.permission.INTERNET" />
+		</config-file>
+
+		<source-file src="src/android/com/lyonbros/turtlstore/TurtlStorePlugin.java" target-dir="src/com/lyonbros/turtlstore/" />
+		<source-file src="src/android/com/lyonbros/turtlstore/SecurityStore.java" target-dir="src/com/lyonbros/turtlstore/" />
+	</platform>
+</plugin>
+
