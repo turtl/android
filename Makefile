@@ -34,7 +34,7 @@ platforms/android/libs/%/libturtl_core.so: native/android/%/libturtl_core.so
 run: all $(ANDROID_NATIVE) www/cacert.js
 	./scripts/cordova.sh run android
 
-platforms/android/release-signing.properties: release-signing.properties.tpl
+platforms/android/release-signing.properties: scripts/release-signing.properties.tpl
 	cat $< \
 		| sed "s|{{ANDROID_SIGN_KEYSTORE}}|$(ANDROID_SIGN_KEYSTORE)|g" \
 		| sed "s|{{ANDROID_SIGN_ALIAS}}|$(ANDROID_SIGN_ALIAS)|g" \
@@ -54,7 +54,7 @@ prepare: all $(ANDROID_NATIVE) www/cacert.js
 # ------------------------------------------------------------------------------
 # shared
 # ------------------------------------------------------------------------------
-www/cacert.js: cacert.pem
+www/cacert.js: scripts/cacert.pem
 	@echo "- $@: $^"
 	@echo "var turtl_core_openssl_pem = [" > $@
 	@cat $^ | sed 's|^|"|g' | sed 's|$$|",|g' >> $@
