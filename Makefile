@@ -1,4 +1,4 @@
-.PHONY: all clean run release build prepare compile config-release config-restore refresh-core-plugin urn
+.PHONY: all clean run release build prepare compile config-release config-restore refresh-core-plugin refresh-store-plugin urn
 
 # non-versioned include
 -include vars.mk
@@ -24,9 +24,6 @@ ANDROID_NATIVE = $(shell find native/android/ -type f -name "*so" | sed 's|nativ
 
 all: www/index.html
 
-# ------------------------------------------------------------------------------
-# Android
-# ------------------------------------------------------------------------------
 platforms/android/libs/%/libturtl_core.so: native/android/%/libturtl_core.so
 	$(mkdir)
 	cp $^ $@
@@ -51,9 +48,6 @@ compile: prepare
 prepare: all $(ANDROID_NATIVE) www/cacert.js
 	./scripts/cordova.sh prepare android $(BUILDFLAGS)
 
-# ------------------------------------------------------------------------------
-# shared
-# ------------------------------------------------------------------------------
 www/cacert.js: scripts/cacert.pem
 	@echo "- $@: $^"
 	@echo "var turtl_core_openssl_pem = [" > $@
@@ -100,6 +94,10 @@ www/index.html: www/app/index.html ./scripts/gen-index www/version.js www/config
 refresh-core-plugin:
 	cordova plugin remove com.lyonbros.turtlcore
 	cordova plugin add bundle/cordova-plugin-turtl-core/
+
+refresh-store-plugin:
+	cordova plugin remove com.lyonbros.turtlstore
+	cordova plugin add bundle/cordova-plugin-turtl-store/
 
 urn:
 	@echo "Is there a Ralphs around here?"
