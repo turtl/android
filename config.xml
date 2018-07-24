@@ -16,9 +16,6 @@
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
     <platform name="android">
-        <config-file parent="/*" target="AndroidManifest.xml">
-            <uses-permission android:name="android.permission.INTERNET" />
-        </config-file>
         <allow-intent href="market:*" />
         <preference name="android-minSdkVersion" value="23" />
         <icon src="www/app/images/favicon.128.png" />
@@ -26,5 +23,6 @@
     <plugin name="cordova-plugin-whitelist" spec="1" />
     <plugin name="com.lyonbros.turtlcore" spec="bundle/cordova-plugin-turtl-core/" />
     <plugin name="com.lyonbros.turtlstore" spec="bundle/cordova-plugin-turtl-store/" />
+    <plugin name="cordova-plugin-file" spec="^6.0.1" />
     <engine name="android" spec="^6.3.0" />
 </widget>
