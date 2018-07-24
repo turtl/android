@@ -46,6 +46,7 @@ js="${js}\n<script src=\"../openssl-authority.js\"></script>"
 js="${js}\n<script src=\"../download.js\"></script>"
 js="${js}\n<script src=\"../core-adapter.js\"></script>"
 js="${js}\n<script src=\"../core-logs.js\"></script>"
+js="${js}\n<script src=\"../remember-me-adapter.js\"></script>"
 
 ## -----------------------------------------------------------------------------
 ## put it all together

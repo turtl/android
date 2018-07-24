@@ -22,7 +22,7 @@
     </platform>
     <plugin name="cordova-plugin-whitelist" spec="1" />
     <plugin name="com.lyonbros.turtlcore" spec="bundle/cordova-plugin-turtl-core/" />
-    <plugin name="com.lyonbros.turtlstore" spec="bundle/cordova-plugin-turtl-store/" />
     <plugin name="cordova-plugin-file" spec="^6.0.1" />
+    <plugin name="com.lyonbros.turtlstore" spec="bundle/cordova-plugin-turtl-store/" />
     <engine name="android" spec="^6.3.0" />
 </widget>

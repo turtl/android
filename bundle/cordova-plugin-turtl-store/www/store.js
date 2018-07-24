@@ -22,6 +22,10 @@ var TurtlStore = (function() {
 	this.load = function() {
 		return exec('load', []);
 	};
+
+	this.clear = function() {
+		return exec('clear', []);
+	};
 });
 
 module.exports = new TurtlStore();

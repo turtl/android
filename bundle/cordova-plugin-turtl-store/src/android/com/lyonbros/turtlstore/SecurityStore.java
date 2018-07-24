@@ -18,6 +18,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.UnrecoverableEntryException;
 import java.security.cert.CertificateException;
+import java.lang.NullPointerException;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -72,6 +73,7 @@ public class SecurityStore {
             cipher.init(Cipher.ENCRYPT_MODE, createSecretKey(keyname));
             final byte[] iv = cipher.getIV();
             final byte[] crypteKey = cipher.doFinal(unencryptedKey);
+			Log.d(LOG_TAG_NAME, "storeKey: storing key/iv of len "+unencryptedKey.length+"/"+crypteKey.length+"/"+iv.length);
             final SharedPreferences.Editor editor = preferences.edit();
             editor.putString(keyname + KEY_SUFFIX_KEY, Base64.encodeToString(crypteKey, Base64.DEFAULT));
             editor.putString(keyname + KEY_SUFFIX_IV, Base64.encodeToString(iv, Base64.DEFAULT));
@@ -80,7 +82,7 @@ public class SecurityStore {
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException |
                 BadPaddingException | IllegalBlockSizeException | NoSuchProviderException |
                 InvalidAlgorithmParameterException e) {
-            Log.e(LOG_TAG_NAME,"Wrong encryption parameter", e);
+            Log.e(LOG_TAG_NAME,"storeKey: Wrong encryption parameter", e);
         }
         preferences.edit().clear().apply();
         return false;
@@ -89,7 +91,6 @@ public class SecurityStore {
     public boolean storeKey(byte[] unencryptedKey) {
         return storeKey(unencryptedKey, "TurtlLoginSecret");
     }
-
 
     /**
      * Loads a saved key (under Keyword TurtlLoginSecret) or <code>null</code> if no key is found.
@@ -109,8 +110,10 @@ public class SecurityStore {
     public byte[] loadKey(String keyname) {
         final SecretKey secretKey = getSecretKey(keyname);
         if (preferences.contains(keyname+ KEY_SUFFIX_KEY) && secretKey != null) {
+			Log.i(LOG_TAG_NAME, "loadKey: grabbing "+keyname+KEY_SUFFIX_KEY);
             final byte[] storedKey = Base64.decode(preferences.getString(keyname + KEY_SUFFIX_KEY, null), Base64.DEFAULT);
             final byte[] encryptionIv = Base64.decode(preferences.getString(keyname + KEY_SUFFIX_IV, null), Base64.DEFAULT);
+			Log.i(LOG_TAG_NAME, "loadKey: key/iv len: "+storedKey.length+"/"+encryptionIv.length);
             final Cipher cipher;
             try {
                 cipher = Cipher.getInstance(CIPHER_MODE);
@@ -120,11 +123,25 @@ public class SecurityStore {
             } catch (NoSuchAlgorithmException | NoSuchPaddingException |
                     InvalidAlgorithmParameterException | InvalidKeyException |
                     IllegalBlockSizeException | BadPaddingException e) {
-                Log.e(LOG_TAG_NAME,"Wrong decryption parameter", e);
+                Log.e(LOG_TAG_NAME,"loadKey: Wrong decryption parameter", e);
             }
-        }
+        } else {
+			Log.i(LOG_TAG_NAME, "loadKey: key not found");
+		}
         return null;
     }
+
+	public boolean clear() {
+        return clear("TurtlLoginSecret");
+	}
+
+	public boolean clear(String keyname) {
+		final SharedPreferences.Editor editor = preferences.edit();
+		editor.remove(keyname + KEY_SUFFIX_KEY);
+		editor.remove(keyname + KEY_SUFFIX_IV);
+		editor.apply();
+		return true;
+	}
 
     private SecretKey createSecretKey(String keyname) throws NoSuchAlgorithmException,
             NoSuchProviderException, InvalidAlgorithmParameterException {
@@ -146,14 +163,14 @@ public class SecurityStore {
             keyStore.load(null);
             return ((KeyStore.SecretKeyEntry) keyStore.getEntry(keyname, null)).getSecretKey();
         } catch (KeyStoreException e) {
-            Log.e(LOG_TAG_NAME,"No keystore-provider is founded or can't load key from keystore.", e);
+            Log.e(LOG_TAG_NAME,"getSecretKey: No keystore-provider is founded or can't load key from keystore.", e);
         } catch (CertificateException | IOException e) {
-            Log.e(LOG_TAG_NAME,"Can't load keystore.", e);
+            Log.e(LOG_TAG_NAME,"getSecretKey: Can't load keystore.", e);
         } catch (NoSuchAlgorithmException e) {
-            Log.e(LOG_TAG_NAME,"Can't load keystore or can't load key from keystore.", e);
-        } catch (UnrecoverableEntryException e) {
-            Log.e(LOG_TAG_NAME,"Can't load key from keystore.", e);
-        }
+            Log.e(LOG_TAG_NAME,"getSecretKey: Can't load keystore or can't load key from keystore.", e);
+        } catch (UnrecoverableEntryException | NullPointerException e) {
+            Log.e(LOG_TAG_NAME,"getSecretKey: Can't load key from keystore.", e);
+		}
         return null;
     }
 }

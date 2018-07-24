@@ -9,5 +9,10 @@ Object.merge(config, {
 		adapter: 'mobile',
 		options: {},
 	},
+	remember_me: {
+		enabled: true,
+		adapter: 'android_keystore',
+		options: {},
+	},
 });
 
