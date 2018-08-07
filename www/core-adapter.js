@@ -120,6 +120,8 @@ var core_poller = setInterval(function() {
 	var config = Composer.object.clone(turtl_core_config, {deep: true});
 	if(!config.logging) config.logging = {};
 	config.logging.level = 'info';
+	if(!config.api) config.api = {};
+	config.api.client_version_string = config.client+'/'+config.version;
 	config.data_folder = datadir;
 	// the core has no real way of loading the config.yaml asset so we need to
 	// to just pass in our entire config as a runtime config. thanks, obama.
