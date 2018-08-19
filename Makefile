@@ -20,11 +20,11 @@ alljs = $(shell echo "../js/main.js" \
 
 ANDROID_UNSIGNED = platforms/android/build/outputs/apk/android-armv7-release-unsigned.apk
 ANDROID_SIGNED = platforms/android/build/outputs/apk/android-armv7-release.apk
-ANDROID_NATIVE = $(shell find native/android/ -type f -name "*so" | sed 's|native/android/|platforms/android/libs/|')
+ANDROID_NATIVE = $(shell find native/ -type f -name "*so" | sed 's|native/|platforms/android/libs/|')
 
 all: www/index.html
 
-platforms/android/libs/%/libturtl_core.so: native/android/%/libturtl_core.so
+platforms/android/libs/%/libturtl_core.so: native/%/libturtl_core.so
 	$(mkdir)
 	cp $^ $@
 
@@ -103,7 +103,7 @@ urn:
 	@echo "Is there a Ralphs around here?"
 
 clean:
-	rm -rf www/app
+	rm -rf www/app www/config-core.js www/index.html www/version.js www/cacert.js
 	rm -rf $(BUILD)
 	rm -rf platforms/android/build platforms/android/CordovaLib/build
 	rm -f www/index.html
