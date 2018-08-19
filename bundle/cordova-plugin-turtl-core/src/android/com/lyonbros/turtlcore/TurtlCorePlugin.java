@@ -11,9 +11,19 @@ public class TurtlCorePlugin extends CordovaPlugin {
 
 	@Override
 	public boolean execute(String action, JSONArray args, CallbackContext callback) throws JSONException {
+		JSONObject core_response = new JSONObject();
 		if(!library_loaded) {
-			TurtlCoreNative.loadLibrary();
-			library_loaded = true;
+			try {
+				TurtlCoreNative.loadLibrary();
+				library_loaded = true;
+			} catch(Throwable e) {
+				core_response.put("code", "native_load_error");
+				core_response.put("msg", e.getMessage());
+				// hope the error has no quotes...
+				callback.error(core_response.toString());
+				e.printStackTrace();
+				return true;
+			}
 		}
 
 		if(action.equals("start")) {
@@ -23,7 +33,9 @@ public class TurtlCorePlugin extends CordovaPlugin {
 			if(res == 0) {
 				callback.success("0");
 			} else {
-				callback.error("{\"msg\":\"could not init turtl\",\"code\":"+res+"}");
+				core_response.put("msg", "could not init turtl");
+				core_response.put("code", String.valueOf(res));
+				callback.error(core_response.toString());
 			}
 			return true;
 		}
@@ -34,7 +46,9 @@ public class TurtlCorePlugin extends CordovaPlugin {
 			if(res == 0) {
 				callback.success("0");
 			} else {
-				callback.error("{\"msg\":\"could not send message\",\"code\":"+res+"}");
+				core_response.put("msg", "could not send message");
+				core_response.put("code", String.valueOf(res));
+				callback.error(core_response.toString());
 			}
 			return true;
 		}
@@ -46,14 +60,17 @@ public class TurtlCorePlugin extends CordovaPlugin {
 			}
 			byte[] msg_bytes = TurtlCoreNative.recvMessage(mid);
 			if(msg_bytes == null) {
-				callback.error("{\"msg\":\"error receiving message\"}");
+				core_response.put("msg", "error receiving message");
+				callback.error(core_response.toString());
 				return true;
 			}
 			String msg = null;
 			try {
 				msg = new String(msg_bytes, "UTF-8");
 			} catch(Exception e) {
-				callback.error("{\"msg\":\""+e.getMessage()+"\"}");
+				core_response.put("msg", e.getMessage());
+				callback.error(core_response.toString());
+				return true;
 			}
 			callback.success(msg);
 			return true;
@@ -73,7 +90,9 @@ public class TurtlCorePlugin extends CordovaPlugin {
 			try {
 				msg = new String(msg_bytes, "UTF-8");
 			} catch(Exception e) {
-				callback.error("{\"msg\":\""+e.getMessage()+"\"}");
+				core_response.put("msg", e.getMessage());
+				callback.error(core_response.toString());
+				return true;
 			}
 			callback.success(msg);
 			return true;
@@ -89,7 +108,9 @@ public class TurtlCorePlugin extends CordovaPlugin {
 			try {
 				msg = new String(msg_bytes, "UTF-8");
 			} catch(Exception e) {
-				callback.error("{\"msg\":\""+e.getMessage()+"\"}");
+				core_response.put("msg", e.getMessage());
+				callback.error(core_response.toString());
+				return true;
 			}
 			callback.success(msg);
 			return true;
@@ -105,15 +126,22 @@ public class TurtlCorePlugin extends CordovaPlugin {
 			try {
 				msg = new String(msg_bytes, "UTF-8");
 			} catch(Exception e) {
-				callback.error("{\"msg\":\""+e.getMessage()+"\"}");
+				core_response.put("msg", e.getMessage());
+				callback.error(core_response.toString());
+				return true;
 			}
 			callback.success(msg);
 			return true;
 		}
 
 		if(action.equals("lasterr")) {
-			String error = TurtlCoreNative.lastError();
-			callback.success(error);
+			try {
+				String error = TurtlCoreNative.lastError();
+				callback.success(error);
+			} catch(Exception e) {
+				core_response.put("msg", e.getMessage());
+				callback.error(core_response.toString());
+			}
 			return true;
 		}
 		return false;
