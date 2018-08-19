@@ -107,7 +107,14 @@ CoreComm.adapters.mobile = Composer.Event.extend({
 });
 
 // fix some bullshit timing issues.
+var load_tries = 0;
 var core_poller = setInterval(function() {
+	load_tries++;
+	if(load_tries > 300) {
+		new LoadErrorController({error: new Error('The core library isn\'t loading properly.\nThis requires inspection of the Android logs.')});
+		clearInterval(core_poller);
+		return;
+	}
 	if(!window.TurtlCore) return;
 	if(!window.openssl_cert_file) return;
 	var datadir = cordova.file.dataDirectory;
@@ -132,12 +139,33 @@ var core_poller = setInterval(function() {
 			core_init = true;
 		})
 		.catch(function(err) {
+			try {
+				var parsed = JSON.parse(err);
+				if(parsed.code == 'native_load_error') {
+					new LoadErrorController({error: new Error(parsed.msg)});
+					return;
+				}
+			} catch(e) {
+				// probably bad json?
+			}
 			console.error('error initializing core: ', err);
 			return TurtlCore.lasterr()
 				.then(function(lasterr) {
 					console.log('lasterr: ', lasterr);
-					alert('Error initializing core: '+(lasterr || err));
-				})
+					var the_error = null;
+					if(err) {
+						if(!(err instanceof Error)) {
+							err = new Error(err);
+						}
+						the_error = err;
+					} else {
+						if(!(lasterr instanceof Error)) {
+							lasterr = new Error(lasterr);
+						}
+						the_error = lasterr;
+					}
+					new LoadErrorController({error: the_error});
+				});
 		});
 }, 10);
 
