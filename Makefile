@@ -1,4 +1,4 @@
-.PHONY: all clean run release build prepare compile config-release config-restore refresh-core-plugin refresh-store-plugin urn
+.PHONY: all clean clean-native run release build prepare compile config-release config-restore refresh-core-plugin refresh-store-plugin urn
 
 # non-versioned include
 -include vars.mk
@@ -107,4 +107,7 @@ clean:
 	rm -rf $(BUILD)
 	rm -rf platforms/android/build platforms/android/CordovaLib/build
 	rm -f www/index.html
+
+clean-native:
+	find native -name "*.so" -exec rm -f {} \;
 
