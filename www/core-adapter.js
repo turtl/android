@@ -124,17 +124,17 @@ var core_poller = setInterval(function() {
 	clearInterval(core_poller);
 	TurtlCore = window.TurtlCore;
 	var cert_file = window.openssl_cert_file;
-	var config = Composer.object.clone(turtl_core_config, {deep: true});
-	if(!config.logging) config.logging = {};
-	config.logging.level = 'info';
-	if(!config.api) config.api = {};
-	config.api.client_version_string = config.client+'/'+config.version;
-	config.data_folder = datadir;
+	var core_config = Composer.object.clone(turtl_core_config, {deep: true});
+	if(!core_config.logging) core_config.logging = {};
+	core_config.logging.level = 'info';
+	if(!core_config.api) core_config.api = {};
+	core_config.api.client_version_string = config.client+'/'+config.version;
+	core_config.data_folder = datadir;
 	// the core has no real way of loading the config.yaml asset so we need to
 	// to just pass in our entire config as a runtime config. thanks, obama.
-	config.config_file = ':null:';
-	config.openssl_cert_file = cert_file;
-	return TurtlCore.start(JSON.stringify(config))
+	core_config.config_file = ':null:';
+	core_config.openssl_cert_file = cert_file;
+	return TurtlCore.start(JSON.stringify(core_config))
 		.then(function() {
 			core_init = true;
 		})
