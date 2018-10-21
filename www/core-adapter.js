@@ -133,7 +133,9 @@ var core_poller = setInterval(function() {
 	// the core has no real way of loading the config.yaml asset so we need to
 	// to just pass in our entire config as a runtime config. thanks, obama.
 	core_config.config_file = ':null:';
-	core_config.openssl_cert_file = cert_file;
+	if(config.openssl_override_root) {
+		core_config.openssl_cert_file = cert_file;
+	}
 	return TurtlCore.start(JSON.stringify(core_config))
 		.then(function() {
 			core_init = true;

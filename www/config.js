@@ -5,6 +5,7 @@ Object.merge(config, {
 	cookie_login: false,
 	base_url: window.location.toString().replace(/\/(index\.html)?$/, '/app'),
 	has_autologin: true,
+	openssl_override_root: false,
 	core: {
 		adapter: 'mobile',
 		options: {},
