@@ -20,11 +20,19 @@
         <preference name="android-minSdkVersion" value="23" />
         <preference name="android-targetSdkVersion" value="26" />
         <icon src="www/app/images/favicon.128.png" />
+        <config-file parent="/manifest/application/activity" target="AndroidManifest.xml">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="*/*" />
+            </intent-filter>
+        </config-file>
     </platform>
     <plugin name="cordova-plugin-whitelist" spec="1" />
     <plugin name="com.lyonbros.turtlcore" spec="bundle/cordova-plugin-turtl-core/" />
     <plugin name="cordova-plugin-file" spec="^6.0.1" />
     <plugin name="com.lyonbros.turtlstore" spec="bundle/cordova-plugin-turtl-store/" />
     <plugin name="cordova-plugin-backbutton" spec="^0.3.0" />
+    <plugin name="cc.fovea.cordova.openwith" spec="bundle/cordova-plugin-openwith/" />
     <engine name="android" spec="^6.3.0" />
 </widget>

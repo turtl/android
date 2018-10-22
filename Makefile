@@ -99,6 +99,10 @@ refresh-store-plugin:
 	cordova plugin remove com.lyonbros.turtlstore
 	cordova plugin add bundle/cordova-plugin-turtl-store/
 
+refresh-share-plugin:
+	cordova plugin remove cc.fovea.cordova.openwith
+	cordova plugin add bundle/cordova-plugin-openwith/
+
 urn:
 	@echo "Is there a Ralphs around here?"
 
