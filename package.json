@@ -1,6 +1,6 @@
 {
   "name": "com.lyonbros.turtl",
-  "version": "0.7.2.2",
+  "version": "0.7.2.3",
   "displayName": "Turtl",
   "dependencies": {
     "android-versions": "^1.3.0",
