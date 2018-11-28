@@ -28,10 +28,15 @@ function setup_share_to() {
 				type = 'text';
 				note.set({text: text});
 			}
-		} else if(shared.path) {
+		} else if(shared.path || (shared.uri && shared.uri.match(/^content:\/\//))) {
 			// i imagine stuff like that goes on all the time heh heh.
+			shared.path = shared.path || shared.uri;
 			var filename = shared.path.split('/');
 			filename = filename[filename.length - 1];
+			if(shared.path.match(/^content:\/\//) && filename.match(/^raw/)) {
+				filename = decodeURIComponent(filename).split('/');
+				filename = filename[filename.length - 1];
+			}
 			loader_promise = new Promise(function(resolve) {
 				cordova.openwith.load(shared, function(base64_data, _item) {
 					type = 'file';
