@@ -31,26 +31,23 @@ class Serializer {
             final ContentResolver contentResolver,
             final Intent intent)
             throws JSONException {
-        JSONArray items = null;
-        if (items == null || items.length() == 0) {
-            items = itemsFromText(contentResolver, intent);
-        }
+        JSONArray items_clip = null;
+        JSONArray items_text = null;
+        JSONArray items_extra = null;
+        JSONArray items_data = null;
+        items_text = itemsFromText(contentResolver, intent);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            items = itemsFromClipData(contentResolver, intent.getClipData());
+            items_clip = itemsFromClipData(contentResolver, intent.getClipData());
         }
-        if (items == null || items.length() == 0) {
-            items = itemsFromExtras(contentResolver, intent.getExtras());
-        }
-        if (items == null || items.length() == 0) {
-            items = itemsFromData(contentResolver, intent.getData());
-        }
-        if (items == null) {
-            return null;
-        }
+        items_extra = itemsFromExtras(contentResolver, intent.getExtras());
+        items_data = itemsFromData(contentResolver, intent.getData());
         final JSONObject action = new JSONObject();
         action.put("action", translateAction(intent.getAction()));
         action.put("exit", readExitOnSent(intent.getExtras()));
-        action.put("items", items);
+        action.put("items_text", items_text);
+        action.put("items_clip", items_clip);
+        action.put("items_extra", items_extra);
+        action.put("items_data", items_data);
         return action;
     }
 
@@ -91,9 +88,12 @@ class Serializer {
                 JSONObject item = null;
                 if(uri != null) {
                     item = toJSONObject(contentResolver, uri);
+                    item.put("subtype", "clip-uri");
+                    item.put("data", getDataFromURI(contentResolver, uri));
                 } else if(text != null) {
                     item = new JSONObject();
                     item.put("type", "text");
+                    item.put("subtype", "clip");
                     item.put("data", text.toString());
                 }
                 if(item == null) {
@@ -127,6 +127,7 @@ class Serializer {
             return null;
         }
         final JSONObject[] items = new JSONObject[1];
+        item.put("subtype", "extra");
         items[0] = item;
         return new JSONArray(items);
     }
@@ -147,6 +148,7 @@ class Serializer {
             return null;
         }
         item.put("type", "text");
+        item.put("subtype", "text");
         item.put("data", text);
         if (item == null) {
             return null;
@@ -173,6 +175,7 @@ class Serializer {
             return null;
         }
         final JSONObject[] items = new JSONObject[1];
+        item.put("subtype", "data");
         items[0] = item;
         return new JSONArray(items);
     }

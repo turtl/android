@@ -5,7 +5,7 @@
   "main": "www/core.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/turtl/mobile.git"
+    "url": "git+https://github.com/turtl/android.git"
   },
   "author": "Andrew Lyon <andrew@lyonbros.com>",
   "license": "GPLv3"

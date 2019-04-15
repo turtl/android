@@ -6,7 +6,23 @@ function setup_share_to() {
 	};
 	const handle_intent = function(intent) {
 		if(intent.action != 'SEND') return;
-		var shared = intent.items[0];
+
+		// we prioritize the items sent in in this order:
+		// - text
+		// - clip
+		// - extra
+		// - data
+		// otherwise things can get screwy
+		const item_text = (intent.items_text || [])[0];
+		const item_clip = (intent.items_clip || [])[0];
+		const item_extra = (intent.items_extra || [])[0];
+		const item_data = (intent.items_data || [])[0];
+		var shared = null;
+		if(!shared && item_text) shared = item_text;
+		if(!shared && item_clip) shared = item_clip;
+		if(!shared && item_extra) shared = item_extra;
+		if(!shared && item_data) shared = item_data;
+
 		var note = new Note();
 		var file = null;
 		var type = null;
@@ -39,7 +55,7 @@ function setup_share_to() {
 			}
 			loader_promise = new Promise(function(resolve) {
 				cordova.openwith.load(shared, function(base64_data, _item) {
-					type = 'file';
+					type = shared.type.indexOf('image/') === 0 ? 'image' : 'file';
 					note.get('file').unset('cleared').set({
 						set: true,
 						name: filename,
